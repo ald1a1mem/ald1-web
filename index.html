@@ -121,23 +121,35 @@
         }
 
         /* 讓每個影片小卡像圖四一樣擁有獨立框線、圓角與維持原本尺寸 */
-        .video-card {
+.video-card {
             background: #ffffff;
             border: 2px solid var(--current-theme);
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             transition: border-color 0.3s ease;
-            /* 保持您原本的尺寸與排版設定，不變動大小 */
             margin-bottom: 20px;
+            padding: 15px; /* 確保四周有空間，不會貼齊邊框 */
         }
 
-        /* 卡片文字與標題套用當前主題色與一致字型 */
-        .video-card .video-title,
+        /* 影片標題、成員與日期樣式與超出防呆 */
+        .video-card .video-title {
+            color: var(--current-theme) !important;
+            font-family: 'Noto Sans TC', 'Fredoka', sans-serif;
+            font-weight: 700;
+            white-space: nowrap;      /* 強制單行 */
+            overflow: hidden;         /* 超出隱藏 */
+            text-overflow: ellipsis;  /* 顯示省略號 ... */
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
         .video-card .video-member,
         .video-card .video-date {
             color: var(--current-theme) !important;
             font-family: 'Noto Sans TC', 'Fredoka', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
         }
 
         /* 自訂義橫向滾動軸美化 */
