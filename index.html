@@ -118,6 +118,26 @@
             display: block;
         }
 
+        /* 讓每個影片小卡像圖四一樣擁有獨立框線、圓角與維持原本尺寸 */
+        .video-card {
+            background: #ffffff;
+            border: 2px solid var(--current-theme);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s ease;
+            /* 保持您原本的尺寸與排版設定，不變動大小 */
+            margin-bottom: 20px;
+        }
+
+        /* 卡片文字與標題套用當前主題色與一致字型 */
+        .video-card .video-title,
+        .video-card .video-member,
+        .video-card .video-date {
+            color: var(--current-theme) !important;
+            font-family: 'Noto Sans TC', 'Fredoka', sans-serif;
+        }
+
         /* 自訂義橫向滾動軸美化 */
         .video-grid::-webkit-scrollbar {
             height: 6px;
@@ -131,7 +151,6 @@
             border-radius: 10px;
         }
 
-        /* 【已修正】補上遺漏的右大括號 */
         footer {
             text-align: center;
             padding: 20px 0;
@@ -157,7 +176,7 @@
             <button class="tab-btn" onclick="showTab('yt-content', this, 'var(--yt-color)')">📺 官方YT</button>
         </div>
 
-        <div class="member-filter-bar" id="member-filters">
+        <div class="member-filter-bar" id="member-filters" style="display: none;">
             <button class="member-btn active" onclick="filterMember('all', this)">全部</button>
             <button class="member-btn" onclick="filterMember('俊抒', this)">俊抒</button>
             <button class="member-btn" onclick="filterMember('ARNO', this)">ARNO</button>
@@ -276,6 +295,7 @@
 
     </div>
 </div>
+
     </div>
 
     <!-- ================= 分頁 2：直拍 ================= -->
@@ -378,18 +398,22 @@
                 display: none !important; 
             }
         </style>
-        <!-- 【已修正】移除此處多餘重複的 </style> 標籤 -->
     </div>
 
     <!-- ================================== -->
 
     <script>
-function showTab(targetId, btnElement, themeColor) {
+        function showTab(targetId, btnElement, themeColor) {
             const contents = document.querySelectorAll('.tab-content');
             contents.forEach(content => content.classList.remove('active'));
 
             const buttons = document.querySelectorAll('.tab-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
+
+            // 如果沒有傳入 btnElement（例如網頁剛載入時），預設選中第一個舞台按鈕
+            if (!btnElement) {
+                btnElement = document.querySelector('.tab-btn');
+            }
 
             document.getElementById(targetId).classList.add('active');
             btnElement.classList.add('active');
@@ -397,6 +421,7 @@ function showTab(targetId, btnElement, themeColor) {
             document.documentElement.style.setProperty('--current-theme', themeColor);
 
             const memberFilters = document.getElementById('member-filters');
+            // 只有直拍、節目、官方YT顯示成員篩選列，舞台不顯示
             if (targetId === 'fancam-content' || targetId === 'variety-content' || targetId === 'yt-content') {
                 memberFilters.style.display = 'flex';
             } else {
@@ -444,11 +469,9 @@ function showTab(targetId, btnElement, themeColor) {
             });
         }
 
+        // 網頁一載入時，強制初始化為舞台分頁（隱藏篩選列、套用正確狀態）
         document.addEventListener("DOMContentLoaded", function() {
-            const defaultGrid = document.querySelector('#stage-content .video-grid');
-            if (defaultGrid) {
-                sortVideos(defaultGrid);
-            }
+            showTab('stage-content', document.querySelector('.tab-btn'), '#c48b59');
         });
     </script>
 
